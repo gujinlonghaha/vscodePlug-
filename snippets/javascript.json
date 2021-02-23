@@ -82,15 +82,7 @@
     "props": {
         "prefix": "props",
         "body": [
-            "props:{",
-            "\r}"
-        ],
-        "description": "A list/hash of attributes that are exposed to accept data from the parent component. "
-    },
-    "prop": {
-        "prefix": "prop",
-        "body": [
-            "prop: {",
+            "props: {",
             "type: Number,",
             "required: true,",
             "default: function () {",
@@ -106,8 +98,18 @@
         "prefix": "computed",
         "body": [
             "computed: {",
-            "\t$1",
-            "},$0"
+            "aDouble: function () {",
+            " return this.a * 2",
+            "},",
+            "aPlus: {",
+            " get: function () {",
+            "return this.a + 1",
+            "},",
+            "set: function (v) {",
+            "this.a = v - 1",
+            "}",
+            "},",
+            "},"
         ],
         "description": "Computed properties to be mixed into the Vue instance. "
     },
@@ -115,17 +117,89 @@
         "prefix": "methods",
         "body": [
             "methods: {",
-            "\t$1",
-            "},$0"
+            "plus$0: function () {",
+            "}",
+            "},$1"
         ],
         "description": "Methods to be mixed into the Vue instance."
+    },
+    "theTemplate": {
+        "prefix": "theTemplate",
+        "body": [
+            "<ThePlanOrg v-model=\"modelObj.parentId\" styleOption=\"width:300px\"></ThePlanOrg>",
+            "<template>",
+            "<a-select",
+            "v-model=\"valueCopy\"",
+            "v-on=\"\\$listeners\"",
+            "v-bind=\"\\$attrs\"",
+            ":style=\"styleOption\"",
+            "@change=\"change\"",
+            ">",
+            "<a-select-option v-for=\"t in list\" :key=\"t.id\">",
+            "{{ t.name }}",
+            "</a-select-option>",
+            "</a-select>",
+            "</template>",
+            "<script>",
+            "import {  getCounorg as getFun } from \"@/api/basicInformation.js\";",
+            "export default {",
+            "model: {",
+            "prop: \"value\",",
+            "event: \"change\"",
+            "},",
+            "props: {",
+            "value: {},",
+            "styleOption: {",
+            "default() {",
+            "return `width:300px`;",
+            "}",
+            "}",
+            "},",
+            "data() {",
+            "return {",
+            "list: []",
+            "};",
+            "},",
+            "mounted() {",
+            "this.getFun();",
+            "},",
+            "computed: {",
+            "valueCopy: {",
+            "get() {",
+            "return this.value;",
+            "},",
+            "set(val) {",
+            "this.\\$emit(\"change\", val);",
+            "}",
+            "}",
+            "},",
+            "methods: {",
+            "change(val) {",
+            "this.$emit(\"change\", val);",
+            "},",
+            "getFun() {",
+            "getFun({}).then(res => {",
+            "this.list = res.data || [];",
+            " });",
+            "}",
+            "}",
+            "};",
+            "</script>",
+            "<style scoped lang=\"less\">",
+            "</style>"
+        ],
+        "description": "自定义插件"
     },
     "watch": {
         "prefix": "watch",
         "body": [
             "watch: {",
-            "\t$1",
-            "},$0"
+            "d$1: {",
+            "handler: function (val, oldVal) {$0 },",
+            "deep:true,",
+            "immediate: true,",
+            "}",
+            "},"
         ],
         "description": "An object where keys are expressions to watch and values are the corresponding callbacks. The value can also be a string of a method name, or an Object that contains additional options. Note that you should not use an arrow function to define a watcher."
     },
@@ -263,7 +337,7 @@
     "mixins": {
         "prefix": "mixins",
         "body": [
-            "mixins"
+            "mixins: [mixinName]"
         ],
         "description": "just a word"
     },
@@ -291,7 +365,10 @@
     "model": {
         "prefix": "model",
         "body": [
-            "model"
+            "model: {",
+            "prop: 'checked',",
+            "event: 'change'",
+            "},"
         ],
         "description": "just a word"
     },
@@ -316,7 +393,6 @@
         ],
         "description": "just a word"
     },
-  
     "vm.$props": {
         "prefix": "vmProps",
         "body": [
@@ -366,7 +442,6 @@
         ],
         "description": "Type: Object. Read only."
     },
-   
     "vm.$refs": {
         "prefix": "vmRefs",
         "body": [
